@@ -23,7 +23,6 @@ jobs:
           file: ./src/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}primeira-pipeline-cicd:v${{ github.run_number }}
-            ${{ secrets.DOCKERHUB_USERNAME }}primeira-pipeline-cicd:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/primeira-pipeline-cicd:v${{ github.run_number }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/primeira-pipeline-cicd:latest
 
-            
