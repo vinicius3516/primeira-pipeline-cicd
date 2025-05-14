@@ -25,3 +25,26 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/primeira-pipeline-gta:v${{ github.run_number }}
             ${{ secrets.DOCKERHUB_USERNAME }}/primeira-pipeline-gta:latest
+        
+  CD:
+    runs-on: ubuntu-latest
+    needs: CI
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configuration of context
+        uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S_KUBECONFIG }}
+
+      - name: Execution the manifest
+        uses: Azure/k8s-deploy@v5
+        with:
+          namespace: default
+          manifests: |
+              ./k8s/deployment.yaml
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/primeira-pipeline-gta:v${{ github.run_number }}
+
+
